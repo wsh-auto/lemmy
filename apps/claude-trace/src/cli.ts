@@ -222,8 +222,7 @@ async function runClaudeWithInterception(
 	const claudePath = getClaudeAbsolutePath();
 	const loaderPath = getLoaderPath();
 
-	log("🔄 Starting traffic logger...", "green");
-	log("📁 Logs will be written to: .claude-trace/log-YYYY-MM-DD-HH-MM-SS.{jsonl,html}", "blue");
+	log("Starting traffic logger...", "green");
 	console.log("");
 
 	// Launch node with interceptor and absolute path to claude, plus any additional arguments
