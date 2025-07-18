@@ -83,11 +83,9 @@ export class HTMLGenerator {
 		try {
 			let filteredPairs = pairs;
 
-			if (!options.includeAllRequests) {
-				// Filter to only include Claude API pairs with messages.length >= 2
-				filteredPairs = this.filterClaudeAPIPairs(pairs);
-				filteredPairs = this.filterShortConversations(filteredPairs);
-			}
+			// Remove filtering entirely - show all data
+			// Previously filtered to only include v1/messages pairs with messages.length >= 2
+			// but this was too aggressive and excluded valid data
 
 			// Load template and bundle files
 			const { htmlTemplate, jsBundle } = this.loadTemplateFiles();
@@ -136,7 +134,7 @@ export class HTMLGenerator {
 	public async generateHTMLFromJSONL(
 		jsonlFile: string,
 		outputFile?: string,
-		includeAllRequests: boolean = false,
+		includeAllRequests: boolean = true,
 	): Promise<string> {
 		if (!fs.existsSync(jsonlFile)) {
 			throw new Error(`File '${jsonlFile}' not found.`);
