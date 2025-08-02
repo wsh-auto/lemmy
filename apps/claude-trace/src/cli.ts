@@ -34,7 +34,7 @@ ${colors.yellow}OPTIONS:${colors.reset}
   --index           Generate conversation summaries and index for .claude-trace/ directory
   --run-with         Pass all following arguments to Claude process
   --include-all-requests Include all requests made through fetch, otherwise only requests to v1/messages with more than 2 messages in the context
-  --no-open          Don't open generated HTML file in browser (works with --generate-html)
+  --no-open          Don't open generated HTML file in browser
   --claude-path      Specify custom path to Claude binary
   --help, -h         Show this help message
 
@@ -510,9 +510,7 @@ async function main(): Promise<void> {
 	}
 
 	// Scenario 1: No args (or claude with args) -> launch claude with interception
-	// For --run-with mode, respect --no-open flag (default is to not open browser)
-	const shouldOpenForRunWith = claudeTraceArgs.includes("--run-with") ? false : openInBrowser;
-	await runClaudeWithInterception(claudeArgs, includeAllRequests, shouldOpenForRunWith, customClaudePath);
+	await runClaudeWithInterception(claudeArgs, includeAllRequests, openInBrowser, customClaudePath);
 }
 
 main().catch((error) => {
