@@ -4,6 +4,7 @@ import { spawn, ChildProcess } from "child_process";
 import * as path from "path";
 import * as fs from "fs";
 import { HTMLGenerator } from "./html-generator";
+import { getTraceDirectory } from "./utils";
 
 // Colors for output
 export const colors = {
@@ -31,7 +32,7 @@ ${colors.yellow}USAGE:${colors.reset}
 ${colors.yellow}OPTIONS:${colors.reset}
   --extract-token    Extract OAuth token and exit (reproduces claude-token.py)
   --generate-html    Generate HTML report from JSONL file
-  --index           Generate conversation summaries and index for .claude-trace/ directory
+  --index           Generate conversation summaries and index for ~/.claude/trace/ directory
   --run-with         Pass all following arguments to Claude process
   --include-all-requests Include all requests made through fetch, otherwise only requests to v1/messages with more than 2 messages in the context
   --no-open          Don't open generated HTML file in browser
@@ -93,8 +94,8 @@ ${colors.yellow}EXAMPLES:${colors.reset}
   claude-trace --claude-path /usr/local/bin/claude
 
 ${colors.yellow}OUTPUT:${colors.reset}
-  Logs are saved to: ${colors.green}.claude-trace/log-YYYY-MM-DD-HH-MM-SS.{jsonl,html}${colors.reset}
-  With --log NAME:   ${colors.green}.claude-trace/NAME.{jsonl,html}${colors.reset}
+  Logs are saved to: ${colors.green}~/.claude/trace/{project-path}/log-YYYY-MM-DD-HH-MM-SS.{jsonl,html}${colors.reset}
+  With --log NAME:   ${colors.green}~/.claude/trace/{project-path}/NAME.{jsonl,html}${colors.reset}
 
 ${colors.yellow}MIGRATION:${colors.reset}
   This tool replaces Python-based claude-logger and claude-token.py scripts
@@ -310,8 +311,8 @@ async function extractToken(customClaudePath?: string): Promise<void> {
 	// Log to stderr so it doesn't interfere with token output
 	console.error(`Using Claude binary: ${claudePath}`);
 
-	// Create .claude-trace directory if it doesn't exist
-	const claudeTraceDir = path.join(process.cwd(), ".claude-trace");
+	// Create trace directory if it doesn't exist
+	const claudeTraceDir = getTraceDirectory();
 	if (!fs.existsSync(claudeTraceDir)) {
 		fs.mkdirSync(claudeTraceDir, { recursive: true });
 	}

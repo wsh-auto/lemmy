@@ -3,6 +3,7 @@ import path from "path";
 import { spawn } from "child_process";
 import { RawPair } from "./types";
 import { HTMLGenerator } from "./html-generator";
+import { getTraceDirectory } from "./utils";
 
 export interface InterceptorConfig {
 	logDirectory?: string;
@@ -22,7 +23,7 @@ export class ClaudeTrafficLogger {
 
 	constructor(config: InterceptorConfig = {}) {
 		this.config = {
-			logDirectory: ".claude-trace",
+			logDirectory: getTraceDirectory(),
 			enableRealTimeHTML: true,
 			logLevel: "info",
 			...config,
